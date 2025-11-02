@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GenericResponseDto<T> {
+public class GenericResponse<T> {
     private boolean success;
     private String message;
     private T data;
