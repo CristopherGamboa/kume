@@ -55,4 +55,12 @@ public class JwtTokenUtil {
                 .getBody()
                 .getSubject();
     }
+    public String getClaim(String token, String name) {
+    return Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .get(name, String.class);
+}
 }
