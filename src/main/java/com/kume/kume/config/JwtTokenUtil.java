@@ -1,4 +1,4 @@
-package com.kume.kume.auth;
+package com.kume.kume.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -55,4 +55,12 @@ public class JwtTokenUtil {
                 .getBody()
                 .getSubject();
     }
+    public String getClaim(String token, String name) {
+    return Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .get(name, String.class);
+}
 }
