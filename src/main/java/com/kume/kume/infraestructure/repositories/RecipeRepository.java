@@ -12,6 +12,6 @@ import com.kume.kume.infraestructure.models.Recipe;
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     Optional<Recipe> findByName(String name);
 
-    Optional<List<Recipe>> findByDifficulty(String difficulty);
+    List<Recipe> findByDifficulty(String difficulty);
 
 }
