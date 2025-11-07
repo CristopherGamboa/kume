@@ -1,16 +1,16 @@
-package com.kume.kume.services;
+package com.kume.kume.application.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kume.kume.dto.user.CreateUserRequest;
-import com.kume.kume.mappers.UserMapper;
-import com.kume.kume.models.Role;
-import com.kume.kume.models.User;
-import com.kume.kume.repositories.RoleRepository;
-import com.kume.kume.repositories.UserRepository;
+import com.kume.kume.application.dto.user.CreateUserRequest;
+import com.kume.kume.infraestructure.models.Role;
+import com.kume.kume.infraestructure.models.User;
+import com.kume.kume.infraestructure.repositories.RoleRepository;
+import com.kume.kume.infraestructure.repositories.UserRepository;
+import com.kume.kume.presentation.mappers.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 

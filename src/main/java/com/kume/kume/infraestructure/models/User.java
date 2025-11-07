@@ -1,4 +1,4 @@
-package com.kume.kume.models;
+package com.kume.kume.infraestructure.models;
 
 import java.util.Collection;
 import java.util.Set;

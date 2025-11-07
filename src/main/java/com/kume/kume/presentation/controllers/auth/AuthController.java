@@ -1,4 +1,4 @@
-package com.kume.kume.auth;
+package com.kume.kume.presentation.controllers.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kume.kume.dto.user.CreateUserRequest;
-import com.kume.kume.services.UserService;
+import com.kume.kume.application.dto.user.CreateUserRequest;
+import com.kume.kume.application.services.UserService;
 
 import jakarta.validation.Valid;
 

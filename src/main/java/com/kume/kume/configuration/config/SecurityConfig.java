@@ -1,4 +1,4 @@
-package com.kume.kume.config;
+package com.kume.kume.configuration.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

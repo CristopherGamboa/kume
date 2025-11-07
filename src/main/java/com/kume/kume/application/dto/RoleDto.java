@@ -1,4 +1,4 @@
-package com.kume.kume.dto;
+package com.kume.kume.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

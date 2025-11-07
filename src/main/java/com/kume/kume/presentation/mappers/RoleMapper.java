@@ -1,7 +1,7 @@
-package com.kume.kume.mappers;
+package com.kume.kume.presentation.mappers;
 
-import com.kume.kume.dto.RoleDto;
-import com.kume.kume.models.Role;
+import com.kume.kume.application.dto.RoleDto;
+import com.kume.kume.infraestructure.models.Role;
 
 public class RoleMapper {
     public static RoleDto toDto(Role role) {
