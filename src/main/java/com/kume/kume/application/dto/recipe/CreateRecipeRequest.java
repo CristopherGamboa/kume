@@ -3,7 +3,6 @@ package com.kume.kume.application.dto.recipe;
 import java.util.Set;
 
 import com.kume.kume.infraestructure.models.DifficultyLevel;
-import com.kume.kume.infraestructure.models.RecipeIngredient;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -25,5 +24,7 @@ public class CreateRecipeRequest {
     @NotBlank(message = "La URL de la imagen es obligatoria")
     private String imageUrl;
     @NotBlank(message = "Los ingredientes son obligatorios")
-    private Set<RecipeIngredient> ingredients;
+    private Set<CreateRecipeIngredientRequest> ingredients;
+    @NotBlank(message = "Los pasos son obligatorios")
+    private Set<CreateStepRequest> steps;
 }

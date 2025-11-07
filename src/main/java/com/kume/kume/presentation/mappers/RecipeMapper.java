@@ -1,5 +1,7 @@
 package com.kume.kume.presentation.mappers;
 
+import java.util.stream.Collectors;
+
 import com.kume.kume.application.dto.recipe.CreateRecipeRequest;
 import com.kume.kume.application.dto.recipe.RecipeResponse;
 import com.kume.kume.application.dto.recipe.UpdateRecipeRequest;
@@ -26,7 +28,12 @@ public class RecipeMapper {
                 .cookingTime(request.getCookingTime())
                 .difficulty(request.getDifficulty())
                 .imageUrl(request.getImageUrl())
-                .ingredients(request.getIngredients())
+                .ingredients(request.getIngredients()
+                    .stream().map(RecipeIngredientMapper::toEntity)
+                    .collect(Collectors.toSet()))
+                .steps(request.getSteps()
+                    .stream().map(StepMapper::toEntity)
+                    .collect(Collectors.toSet()))
                 .build();
     }
     
@@ -34,7 +41,7 @@ public class RecipeMapper {
         if (request == null) {
             return null;
         }
-        
+
         existingRecipe.setName(request.getName());
         existingRecipe.setCookingTime(request.getCookingTime());
         existingRecipe.setDifficulty(request.getDifficulty());
