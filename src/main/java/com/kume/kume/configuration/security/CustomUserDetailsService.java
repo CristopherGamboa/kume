@@ -1,7 +1,7 @@
-package com.kume.kume.security;
+package com.kume.kume.configuration.security;
 
-import com.kume.kume.models.User;
-import com.kume.kume.repositories.UserRepository;
+import com.kume.kume.infraestructure.models.User;
+import com.kume.kume.infraestructure.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

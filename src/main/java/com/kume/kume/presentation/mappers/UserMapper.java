@@ -1,7 +1,7 @@
-package com.kume.kume.mappers;
+package com.kume.kume.presentation.mappers;
 
-import com.kume.kume.dto.user.CreateUserRequest;
-import com.kume.kume.models.User;
+import com.kume.kume.infraestructure.models.User;
+import com.kume.kume.application.dto.user.CreateUserRequest;
 
 public class UserMapper {
     public static CreateUserRequest toDto(User user) {

@@ -1,4 +1,4 @@
-package com.kume.kume.models;
+package com.kume.kume.infraestructure.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

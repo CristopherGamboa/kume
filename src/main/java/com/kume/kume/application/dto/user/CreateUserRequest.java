@@ -1,4 +1,4 @@
-package com.kume.kume.dto.user;
+package com.kume.kume.application.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

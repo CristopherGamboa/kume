@@ -1,4 +1,4 @@
-package com.kume.kume.dto;
+package com.kume.kume.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
