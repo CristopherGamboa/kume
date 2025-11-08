@@ -1,5 +1,6 @@
 package com.kume.kume.presentation.controllers;
 
+
 import com.kume.kume.application.dto.recipe.CreateRecipeRequest;
 import com.kume.kume.application.dto.recipe.UpdateRecipeRequest;
 import com.kume.kume.application.dto.recipe.RecipeResponse;
@@ -15,6 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
+
+
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @Controller
 @RequestMapping("/recipes") // Prefijo para todas las rutas del CRUD
@@ -138,5 +144,14 @@ public class RecipeController {
         recipeService.deleteRecipe(id);
         redirectAttributes.addFlashAttribute("successMessage", "Receta eliminada exitosamente.");
         return "redirect:/recipes/list";
+    @GetMapping("/recipes")
+    public String privateRecipesList(Model model) {
+
+        model.addAttribute("navbarItems", List.of(
+                Map.of("label", "Inicio", "url", "/home"),
+                Map.of("label", "Cerrar Sesión", "url", "/auth/logout")));
+        model.addAttribute("toastMessage", "Bienvenido, has iniciado sesión correctamente.");
+        model.addAttribute("toastType", "success");
+        return "recipe/recipe-list";
     }
 }
