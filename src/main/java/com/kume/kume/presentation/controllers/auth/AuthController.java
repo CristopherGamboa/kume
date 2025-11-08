@@ -23,7 +23,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login(){
-        return "login";
+        return "auth/login";
     }
 
     /**
@@ -32,7 +32,7 @@ public class AuthController {
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("userForm", new CreateUserRequest()); 
-        return "register";
+        return "auth/register";
     }
 
     /**
