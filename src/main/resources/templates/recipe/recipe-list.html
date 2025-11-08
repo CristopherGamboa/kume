@@ -2,20 +2,35 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Recetas Detalladas (Privado)</title>
+    <title>Búsqueda de Recetas</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-    <header>
-        <h1 sec:authentication="name">Bienvenido, Usuario Autenticado!</h1>
-        <nav>
-            <a th:href="@{/home}">Inicio</a>
-            <a th:href="@{auth/logout}">Cerrar Sesión</a>
-        </nav>
-    </header>
-    <main>
-        <h2>Acceso a Detalles de Recetas (Ruta Privada)</h2>
-        <p>Esta página solo es visible después de iniciar sesión con éxito.</p>
-    </main>
+    <h1>Catálogo de Recetas</h1>
+
+    <form th:action="@{/recetas/listado}" method="get" class="search-form">
+        <input type="text" name="query" th:value="${query}" placeholder="Buscar por nombre...">
+        <button type="submit">Buscar</button>
+    </form>
+    
+    <p th:if="${successMessage}" th:text="${successMessage}" class="success"></p>
+
+    <div class="recipe-grid">
+        <div th:each="recipe : ${recipes}" class="recipe-card">
+            <h3 th:text="${recipe.name}">Nombre de la Receta</h3>
+            <p>Tiempo de cocción: <span th:text="${recipe.cookingTime}"></span></p>
+            
+            <a th:href="@{/recetas/{id}/detalle(id=${recipe.id})}" class="btn-detail">Ver Detalles</a>
+            
+            <div sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/recetas/{id}/editar(id=${recipe.id})}" class="btn-edit">Editar</a>
+                <form th:action="@{/recetas/{id}/eliminar(id=${recipe.id})}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('¿Seguro que quieres eliminar?')" class="btn-delete">Eliminar</button>
+                </form>
+            </div>
+        </div>
+        <p th:if="${recipes.isEmpty()}">No se encontró Receta.</p>
+    </div>
+    <p><a th:href="@{/home}">Volver al inicio</a></p>
 </body>
 </html>
