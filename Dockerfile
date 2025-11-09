@@ -1,25 +1,29 @@
-# Stage 1: Compilación
-# Usamos una imagen que incluye Maven y el JDK 21 (Maven 3.9.x es compatible)
+# ----------------------------------------------------------------------------------
+# STAGE 1: BUILD (Compilación del código fuente en un contenedor con Maven y JDK 21)
+# ----------------------------------------------------------------------------------
 FROM maven:3.9-eclipse-temurin-21 AS build
+# Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
-# Copia los archivos de Maven para manejar las dependencias
+# Copia los archivos de configuración de Maven (pom.xml) y las dependencias
 COPY pom.xml .
-# Descarga las dependencias (mejora el rendimiento si no hay cambios)
-RUN mvn dependency:go-offline
-# Copia el código fuente restante
+# Intenta descargar dependencias primero para aprovechar el cache de Docker
+RUN mvn dependency:go-offline -B
+# Copia el resto del código fuente
 COPY . .
-# Compila el proyecto, saltando las pruebas (puedes ejecutar las pruebas si lo deseas)
-RUN mvn package -DskipTests
+# Ejecuta la compilación de la aplicación, creando el JAR final
+RUN mvn clean package -DskipTests
 
-# Stage 2: Imagen de Ejecución (JRE LIGERO)
-# Usamos el JRE 21 para una imagen más pequeña en producción
+# ----------------------------------------------------------------------------------
+# STAGE 2: RUN (Creación de la imagen ligera de ejecución con JRE 21)
+# ----------------------------------------------------------------------------------
+# Usa una imagen base más ligera (JRE) para la ejecución final
 FROM eclipse-temurin:21-jre-focal
-# Argumento para el JAR
-ARG JAR_FILE=/app/target/*.jar
-# Copia el JAR compilado desde el Stage de compilación
-COPY --from=build ${JAR_FILE} app.jar
 
-# Configuración de red y arranque
+# Puerto de la aplicación (cambia de 8081 a 8080 si esa es tu configuración por defecto)
 EXPOSE 8080
-# Especifica el punto de entrada para ejecutar la aplicación Spring Boot
+
+# Copia el archivo JAR compilado desde la etapa 'build' al contenedor de ejecución
+COPY --from=build /app/target/*.jar app.jar
+
+# Comando de entrada simple
 ENTRYPOINT ["java", "-jar", "/app.jar"]
