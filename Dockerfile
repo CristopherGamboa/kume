@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # FASE 1: BUILD (Optimizado para un contexto de clonación completo)
 # -----------------------------------------------------------------------------
-FROM maven:3.9-eclipse-temurin-21-alpine AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 # Establece el directorio de trabajo
 WORKDIR /app
