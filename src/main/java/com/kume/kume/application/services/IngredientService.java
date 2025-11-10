@@ -14,9 +14,13 @@ import com.kume.kume.infraestructure.repositories.IngredientRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class IngredientService {
-    private final IngredientRepository ingredientRepository;
+    private IngredientRepository ingredientRepository;
+
+    public IngredientService(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
+    }
+
     public Result<List<IngredientDTO>> getAll() {
         List<IngredientDTO> ingredients = ingredientRepository.findAll()
                 .stream()
@@ -25,7 +29,7 @@ public class IngredientService {
 
         return Result.success("Listado de ingredientes obtenido correctamente", ingredients);
     }
-    
+
     public Result<IngredientDTO> getById(Long id) {
         Optional<Ingredient> ingredient = ingredientRepository.findById(id);
 
@@ -33,6 +37,7 @@ public class IngredientService {
                 .map(i -> Result.success("Ingrediente encontrado", IngredientDTO.fromEntity(i)))
                 .orElseGet(() -> Result.failure("El ingrediente no existe"));
     }
+
 
     public Result<IngredientDTO> create(IngredientDTO dto) {
         Ingredient ingredient = dto.toEntity();
