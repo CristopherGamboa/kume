@@ -14,7 +14,7 @@ import com.kume.kume.application.dto.Result;
 import com.kume.kume.application.services.IngredientService;
 
 @Controller
-@RequestMapping("/ingredients")
+@RequestMapping("/ingredient")
 public class IngredientController {
 
     private final IngredientService ingredientService;
@@ -35,6 +35,13 @@ public class IngredientController {
         return "ingredient/index";
     }
 
+    @GetMapping("/edit/{id}")
+    public String editIngredient(@PathVariable Long id, Model model) {
+        Result<IngredientDTO> ingredient = ingredientService.getById(id);
+        model.addAttribute("ingredient", ingredient);
+        return "ingredient/index";
+    }
+
     @PostMapping("/save")
     public String save(@ModelAttribute IngredientDTO dto) {
         if (dto.getId() == null) {
@@ -42,12 +49,12 @@ public class IngredientController {
         } else {
             ingredientService.update(dto.getId(), dto);
         }
-        return "redirect:/ingredients";
+        return "redirect:/ingredient";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         ingredientService.delete(id);
-        return "redirect:/ingredients";
+        return "redirect:/ingredient";
     }
 }
