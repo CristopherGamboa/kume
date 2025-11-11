@@ -26,14 +26,15 @@ public class CspNonceFilter extends org.springframework.web.filter.OncePerReques
                 "base-uri 'self';",
                 "object-src 'none';",
                 "frame-ancestors 'none';",
-                "img-src 'self' data:;",
+                
+                "img-src 'self' data: https:;", 
+                
                 "font-src 'self' https://fonts.gstatic.com;",
                 
-                "style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net 'nonce-" + n + "';",
-                
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net;",
                 "script-src 'self' https://cdn.jsdelivr.net 'nonce-" + n + "';",
 
-                "connect-src 'self';",
+                "connect-src 'self' https://cdn.jsdelivr.net;",
                 "form-action 'self';",
                 "upgrade-insecure-requests"
         );
