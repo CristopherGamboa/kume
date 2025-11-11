@@ -28,11 +28,15 @@ public class CspNonceFilter extends org.springframework.web.filter.OncePerReques
                 "frame-ancestors 'none';",
                 "img-src 'self' data:;",
                 "font-src 'self' https://fonts.gstatic.com;",
+                
+                "style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net 'nonce-" + n + "';",
+                
                 "script-src 'self' https://cdn.jsdelivr.net 'nonce-" + n + "';",
-                "style-src 'self' https://fonts.googleapis.com 'nonce-" + n + "';",
+
                 "connect-src 'self';",
                 "form-action 'self';",
-                "upgrade-insecure-requests");
+                "upgrade-insecure-requests"
+        );
 
         res.setHeader("Content-Security-Policy", csp);
         chain.doFilter(req, res);
