@@ -15,7 +15,6 @@ import com.kume.kume.infraestructure.models.Comment;
 import com.kume.kume.infraestructure.models.DifficultyLevel; // Asumiendo este enum existe
 import com.kume.kume.infraestructure.models.RecipeMedia;
 import com.kume.kume.infraestructure.models.User;
-import com.kume.kume.infraestructure.models.User;
 import com.kume.kume.infraestructure.repositories.UserRepository;
 import com.kume.kume.presentation.mappers.RecipeMapper;
 
@@ -98,10 +97,6 @@ public class RecipeController {
         model.addAttribute("recipe", recipe);
         model.addAttribute("comments", comments);
         model.addAttribute("shareUrl", absoluteUrl);
-
-
-        RecipeResponse recipe = recipeOpt.getData();
-        model.addAttribute("recipe", recipe);
 
         // Cargar medias desde la BD
         List<String> extraImageUrls = recipeMediaService.findByRecipeId(id)
