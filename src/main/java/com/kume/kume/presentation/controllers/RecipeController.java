@@ -1,15 +1,20 @@
 package com.kume.kume.presentation.controllers;
 
+import com.kume.kume.application.dto.IngredientDTO;
 import com.kume.kume.application.dto.Result;
 import com.kume.kume.application.dto.comment.CommentResponse;
 import com.kume.kume.application.dto.recipe.CreateRecipeRequest;
 import com.kume.kume.application.dto.recipe.UpdateRecipeRequest;
 import com.kume.kume.application.dto.recipe.RecipeResponse;
+import com.kume.kume.application.services.IngredientService;
+import com.kume.kume.application.services.RecipeMediaService;
 import com.kume.kume.application.services.CommentService;
 import com.kume.kume.application.services.RatingService;
 import com.kume.kume.application.services.RecipeService;
 import com.kume.kume.infraestructure.models.Comment;
 import com.kume.kume.infraestructure.models.DifficultyLevel; // Asumiendo este enum existe
+import com.kume.kume.infraestructure.models.RecipeMedia;
+import com.kume.kume.infraestructure.models.User;
 import com.kume.kume.infraestructure.models.User;
 import com.kume.kume.infraestructure.repositories.UserRepository;
 import com.kume.kume.presentation.mappers.RecipeMapper;
@@ -19,6 +24,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +33,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -40,6 +47,12 @@ public class RecipeController {
     private final RatingService ratingService;
     private final UserRepository userRepository;
     
+
+    @Autowired
+    private final IngredientService ingredientService;
+
+    @Autowired
+    private final RecipeMediaService recipeMediaService;
 
     /**
      * Mapeo para la búsqueda y listado de recetas.
@@ -56,7 +69,7 @@ public class RecipeController {
         List<RecipeResponse> recipes = recipeService.searchRecipes(query, type, country, difficulty).getData();
 
         model.addAttribute("recipes", recipes);
-        
+
         // Pasar los filtros actuales para mantenerlos en el formulario
         model.addAttribute("query", query);
         model.addAttribute("type", type);
@@ -87,6 +100,17 @@ public class RecipeController {
         model.addAttribute("shareUrl", absoluteUrl);
 
 
+        RecipeResponse recipe = recipeOpt.getData();
+        model.addAttribute("recipe", recipe);
+
+        // Cargar medias desde la BD
+        List<String> extraImageUrls = recipeMediaService.findByRecipeId(id)
+                .stream()
+                .map(media ->  media.getMediaUrl()) // aquí está lo que debes cambiar
+                .toList();
+
+        model.addAttribute("extraImages", extraImageUrls);
+
         return "recipe/recipe-details";
     }
 
@@ -100,21 +124,28 @@ public class RecipeController {
     public String showCreateForm(Model model) {
         model.addAttribute("recipeRequest", new CreateRecipeRequest());
         model.addAttribute("difficultyLevels", DifficultyLevel.values());
+        List<IngredientDTO> ingredients = ingredientService.getAll().getData();
+        model.addAttribute("allIngredients", ingredients);
         return "recipe/recipe-create"; // Vista: Formulario de creación
     }
 
     /**
      * Procesa la solicitud POST para crear una receta.
+     * 
+     * @throws IOException
      */
     @PostMapping("/create")
     public String createRecipe(@Valid @ModelAttribute("recipeRequest") CreateRecipeRequest request,
             BindingResult result,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            @AuthenticationPrincipal User user) throws IOException {
 
         if (result.hasErrors()) {
             // Si hay errores de validación, vuelve al formulario
             return "recipe/recipe-create";
         }
+
+        request.setUserId(user.getId());
 
         recipeService.createRecipe(request);
         redirectAttributes.addFlashAttribute("successMessage", "Receta registrada exitosamente.");
